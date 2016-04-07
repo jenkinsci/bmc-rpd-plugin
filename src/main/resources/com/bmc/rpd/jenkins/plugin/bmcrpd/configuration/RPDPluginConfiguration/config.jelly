@@ -1,0 +1,65 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <script type='text/javascript'>
+        function deselectCheckbox(el){
+            for (i = 0; i &lt; document.getElementsByName("rpd.defaultProfile").length; i++) {
+                document.getElementsByName("rpd.defaultProfile")[i].checked=false;
+            }
+            el.checked=true;
+        }
+    </script>
+    <f:section title="BMC Release Package and Deployment Configuration">
+        <f:entry title="">
+            <f:repeatable var="serverProfile" items="${instance.serverProfiles}" radioprefix="">
+                <table width="100%">
+                    <f:entry title="Set as Default Server Profile" description="This profile will be used as default for each step">
+                        <f:checkbox name="rpd.defaultProfile"  value="${serverProfile.defaultProfile}" checked="${serverProfile.isDefaultProfile()}" onclick="deselectCheckbox(this)"/>
+                    </f:entry>
+                    <f:entry title="Server Profile Name" description="Name given to identify a RPD server to process against." field="serverProfileName">
+                        <f:textbox name="rpd.serverProfileName" value="${serverProfile.serverProfileName}" clazz="rpd-config-field"/>
+                    </f:entry>
+                    <f:entry title="RPD Server URL" field="serverURL" description="Use the following format: http(s)://{host}:{port}/brlm/index.php/api/processRequest.xml">
+                        <f:textbox name="rpd.serverURL" value="${serverProfile.serverURL}" clazz="rpd-config-field"/>
+                    </f:entry>
+                    <f:entry title="RPD User Token" field="userToken" description="This Token will be available in all steps">
+                        <f:password name="rpd.userToken" value="${serverProfile.userToken}" clazz="rpd-config-field"/>
+                    </f:entry>
+                    <f:entry title="">
+                        <div style="text-align: right">
+                            <f:repeatableDeleteButton/>
+                            <f:validateButton
+                                    title="${%Test Connection}" progress="${%Testing...}"
+                                    method="testConnection" with="rpd.serverURL,rpd.userToken"/>
+                        </div>
+                    </f:entry>
+                </table>
+            </f:repeatable>
+            <script type='text/javascript'>
+                setInterval(function(){
+                        var fields = [];
+                        YAHOO.util.Dom.getElementsByClassName('rpd-config-field', "input").forEach(function(e){
+                            var trouble = false;
+                            if(e.value == null || e.value == ''){
+                                    e.targetElement = findFollowingTR(e, "validation-error-area").firstChild.nextSibling;
+                                    e.targetElement.innerHTML = "&lt;div class=error&gt; Field cannot be empty &lt;/div&gt;";
+                                    trouble = true;
+                            }
+                            else{
+                                if(e.name == "rpd.serverProfileName" ){
+                                    if((fields.indexOf(e.value) >= 0 || fields.indexOf(e.defaultValue) >= 0)){
+                                        e.targetElement = findFollowingTR(e, "validation-error-area").firstChild.nextSibling;
+                                        e.targetElement.innerHTML = "&lt;div class=error&gt; Duplicates are not allowed &lt;/div&gt;";
+                                        trouble = true;
+                                    }
+                                }
+                            }
+                            if(!trouble){
+                                e.targetElement = findFollowingTR(e, "validation-error-area").firstChild.nextSibling.innerHTML = '';
+                            }
+                            fields.push(e.value);
+                        });
+                }, 2000);
+            </script>
+        </f:entry>
+    </f:section>
+</j:jelly>

@@ -1,0 +1,75 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <!--
+      This jelly script is used for per-project configuration.
+
+      See global.jelly for a general discussion about jelly script.
+    -->
+
+    <!--
+      Creates a text field that shows the value of the "name" property.
+      When submitted, it will be passed to the corresponding constructor parameter.
+    -->
+    <f:block>
+        <f:entry>
+            <j:set var="uniq_id" value="${descriptor.generateUniqId()}"/>
+            <f:entry title="Server Profile Name" field="customProfile">
+                <f:select default="instance.getCustomProfile()" id="${h}_${uniq_id}_select" />
+            </f:entry>
+            <f:entry title="Package Name" field="pack">
+                <div>
+                    <f:textbox  value="${instance.pack}" required="true" id="${h}_${uniq_id}" clazz="auto-complete rpd-package-class"/>
+                    <div id="${h}_${uniq_id}_myContainer" class="yui-ac-container"></div>
+                </div>
+
+            </f:entry>
+            <f:entry title="Instance Name" field="instanceName">
+                <f:textbox value="${instance.instanceName}"/>
+            </f:entry>
+            <f:entry title="Route Name" field="route">
+                <f:select value="${instance.route}"/>
+            </f:entry>
+            <f:entry title="Environment Name" field="environment">
+                <f:select value="${instance.environment}"/>
+            </f:entry>
+            <script type='text/javascript'>
+                YAHOO.util.Event.on("${h}_${uniq_id}_select", "change",function(e){
+                    document.getElementById("${h}_${uniq_id}").value=null;
+                });
+
+                YAHOO.util.Event.onAvailable("page-body",function(a){
+                YAHOO.util.Dom.getElementsByClassName('rpd-package-class', "input").forEach(function(el){
+
+                var input = el;
+                var select = document.getElementById(el.id+"_select");
+                var dsXHR = new YAHOO.util.XHRDataSource("${descriptor.getDescriptorFullUrl()}/completePack");
+                dsXHR.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
+                dsXHR.responseSchema = {
+                    resultsList: "suggestions",
+                    fields: ["name"]
+                };
+                var myAutoComp = new YAHOO.widget.AutoComplete(input.id, input.id+"_myContainer", dsXHR);
+                myAutoComp.generateRequest = function(query) {
+                return "?value=" + query + "&amp;profile="+ select.value ;
+                };
+                //myAutoComp.enableCache = false;
+                //myAutoComp.scrollIntoView = true;
+                myAutoComp.prehighlightClassName = "yui-ac-prehighlight";
+                myAutoComp.animSpeed = 0;
+                myAutoComp.useShadow = true;
+                myAutoComp.autoSnapContainer = true;
+                myAutoComp.maxResultsDisplayed = 30;
+                myAutoComp.doBeforeExpandContainer = function(textbox,container) {// adjust the width every time we show it
+                    container.style.width=textbox.clientWidth+"px";
+                    var Dom = YAHOO.util.Dom;
+                    Dom.setXY(container, [Dom.getX(textbox), Dom.getY(textbox) + textbox.offsetHeight] );
+                    return true;
+                }
+                })
+
+                });
+
+            </script>
+        </f:entry>
+    </f:block>
+</j:jelly>
