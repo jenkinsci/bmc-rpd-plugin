@@ -11,7 +11,7 @@
   </parent>
   <groupId>RPD</groupId>
   <artifactId>bmc-rpd</artifactId>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>BMC Release Package and Deployment plugin</name>
@@ -35,7 +35,7 @@
     <connection>scm:git:git://github.com/jenkinsci/bmc-rpd-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/bmc-rpd-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/bmc-rpd-plugin</url>
-    <tag>bmc-rpd-1.0</tag>
+    <tag>bmc-rpd-1.0.1</tag>
   </scm>
 
   <repositories>
