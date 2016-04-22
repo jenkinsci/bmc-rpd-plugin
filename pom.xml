@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -8,17 +7,18 @@
     <artifactId>plugin</artifactId>
     <!-- Baseline Jenkins version you use to build and test the plugin. Users must have this version or newer to run. -->
     <version>2.2</version>
-    <relativePath/>
+    <relativePath />
   </parent>
   <groupId>RPD</groupId>
   <artifactId>bmc-rpd</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>hpi</packaging>
 
   <name>BMC Release Package and Deployment plugin</name>
   <description>The RPD Plugin integrates Jenkins with BMC Release Package and Deployment (RPD) by adding two build and post-build actions to your Jenkins build configuration, which can be executed separately or combined sequentially</description>
   <properties>
     <jenkins.version>1.639</jenkins.version>
+    <findbugs.skip>true</findbugs.skip>
   </properties>
   <url>https://wiki.jenkins-ci.org/display/JENKINS/RPD+Plugin</url>
 
@@ -35,6 +35,7 @@
     <connection>scm:git:git://github.com/jenkinsci/bmc-rpd-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/bmc-rpd-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/bmc-rpd-plugin</url>
+    <tag>bmc-rpd-1.0</tag>
   </scm>
 
   <repositories>
