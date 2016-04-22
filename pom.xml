@@ -35,7 +35,7 @@
     <connection>scm:git:git://github.com/jenkinsci/bmc-rpd-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/bmc-rpd-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/bmc-rpd-plugin</url>
-    <tag>bmc-rpd-1.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <repositories>
