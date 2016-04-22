@@ -12,7 +12,7 @@
   </parent>
   <groupId>RPD</groupId>
   <artifactId>bmc-rpd</artifactId>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>BMC Release Package and Deployment plugin</name>
